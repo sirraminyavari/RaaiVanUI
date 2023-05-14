@@ -1,8 +1,6 @@
 /**
  * A component for viewing the subject's item.
  */
-import React from 'react';
-import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import AdvanceSearchDesktop from './AdvancedSearchDesktop';
 
 /**
@@ -14,11 +12,7 @@ const AdvanceSearch = ({ ...props }) => {
     <div style={{ width: '100%' }}>
       {/* If True, will render MobileView component */}
 
-      {DimensionHelper()?.isTabletOrMobile ? (
-        <AdvanceSearchDesktop {...props} />
-      ) : (
-        <AdvanceSearchDesktop {...props} />
-      )}
+      <AdvanceSearchDesktop {...props} itemSelectionMode />
     </div>
   );
 };

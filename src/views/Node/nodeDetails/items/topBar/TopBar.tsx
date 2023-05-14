@@ -2,15 +2,14 @@
  * here we make the top bar for NodeDetails
  */
 import APIHandler from 'apiHelper/APIHandler';
-import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
+// import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
 import Button from 'components/Buttons/Button';
-import FilledBookmarkIcon from 'components/Icons/BookmarkIcon/FilledBookmark';
 import OutLineBookmarkIcon from 'components/Icons/BookmarkIcon/OutlineBookmark';
 import DocIcon from 'components/Icons/DocIcon';
 import Eye from 'components/Icons/Eye';
 import { CV_DISTANT } from 'constant/CssVariables';
 import { decodeBase64 } from 'helpers/helpers';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import TopBarLoadingSkelton from '../TopBarLoadingSkelton';
@@ -19,6 +18,20 @@ import * as Styles from './TopBar.style';
 import { useThemeSlice } from 'store/slice/theme';
 import { selectTheme } from 'store/slice/theme/selectors';
 import useWindow from 'hooks/useWindowContext';
+import {
+  ArrowCircleSvg,
+  BookmarkSvg,
+  ChatBubbleSvg,
+  ReaderSvg,
+  RowItem,
+  RVSizeProp,
+  RVVariantProp,
+  Typography,
+  Breadcrumb,
+  FileTrayFullSvg,
+} from '@cliqmind/rv-components';
+import ShadowButton from 'components/Buttons/ShadowButton';
+import BreadcrumbLayout from 'layouts/NewSidebar/breadCrumbLayout/breadcrumbLayout';
 
 const likeNode = new APIHandler('CNAPI', 'Like');
 const unlikeNode = new APIHandler('CNAPI', 'Unlike');
@@ -134,50 +147,130 @@ const TopBar = ({
         width: '100%',
       }}
     >
+      <BreadcrumbLayout
+        Icon={(props) => <FileTrayFullSvg size="2rem" {...props} />}
+        size={RVSizeProp.small}
+        searchInputPlaceholder={RVDic?.SearchInN.replace(
+          '[n]',
+          RVDic?.Keywords
+        )}
+        routeLinks={[
+          // { label: String(teamName), path: '/classes' },
+          {
+            label: decodeBase64(
+              newNode ? nodeDetails?.Title : NodeType?.Value[0]?.Name
+            ),
+            path: `/classes/${
+              newNode ? nodeDetails?.NodeID : NodeType?.Value[0]?.ID
+            }`,
+          },
+          {
+            label: decodeBase64(Name?.Value),
+            path: `/node/${nodeDetails?.NodeID}`,
+          },
+        ]}
+      />
       {nodeDetails ? (
         <Styles.NodeTopBarContainer>
           <Styles.NodeTopBarTopRow isTabletOrMobile={isTabletOrMobile}>
-            <Styles.NodeTopBarBreadcrumbWrapper>
-              <Breadcrumb items={breadcrumbItems} />
-            </Styles.NodeTopBarBreadcrumbWrapper>
             <div
               style={{
                 display: 'flex',
                 flexDirection: 'row',
                 alignItems: 'center',
+                gap: '1rem',
               }}
             ></div>
             <Styles.NodeTopBarCounterBookmarkContainer>
               {!newNode && (
                 <>
-                  <Button
-                    onClick={onBookmarkPressed}
-                    style={{
-                      borderRadius: '10rem',
-                      height: '2rem',
-                      whiteSpace: 'nowrap',
-                    }}
-                    type={bookmarkStatus === 'liked' ? 'primary' : 'primary-o'}
+                  <RowItem
+                    size={RVSizeProp.small}
+                    ActionsComponent={
+                      <div
+                        style={{
+                          display: 'flex',
+                          columnGap: '.5rem',
+                        }}
+                      >
+                        <Button variant={RVVariantProp.white}>back</Button>
+                        <Button fullWidth noWrap style={{ width: 200 }}>
+                          <ArrowCircleSvg
+                            width="1.3em"
+                            height="1.3em"
+                            direction="up"
+                          />
+                          publish
+                        </Button>
+                      </div>
+                    }
                   >
-                    {bookmarkStatus === 'liked' ? (
-                      <>
-                        <FilledBookmarkIcon
-                          className={'rv-default rv-white'}
-                          style={{ marginInlineEnd: '0.5rem' }}
-                        />
-                        {RVDic.Bookmarked}
-                      </>
-                    ) : (
-                      <>
-                        <OutLineBookmarkIcon
-                          className={'rv-default'}
-                          style={{ marginInlineEnd: '0.5rem' }}
-                        />
-
-                        {RVDic.Bookmark}
-                      </>
-                    )}
-                  </Button>
+                    {/* {nodeDetails?.Name?.Value !== undefined && (
+                      <TitleContainer newNode={newNode}>
+                        {nodeDetails?.Name?.Editable ? (
+                          <TitleInput
+                            onChange={onTitleChange}
+                            defaultValue={decodeBase64(
+                              nodeDetails?.Name?.Value
+                            )}
+                            onFocus={() => {
+                              setTitleEditMode(true);
+                            }}
+                            autoFocus={true}
+                            placeholder={RVDic.Title}
+                            onBlur={onSaveTitle}
+                            titleEditMode={titleEditMode}
+                            style={{
+                              fontSize: '1.4rem',
+                              fontWeight: 'bold',
+                              borderWidth: 0,
+                              borderBottomWidth: +`${titleEditMode ? 1 : 0}`,
+                              borderRadius: 0,
+                              borderColor: `${CV_DISTANT}`,
+                              width: '100%',
+                            }}
+                          />
+                        ) : (
+                          <Heading type={'h1'}>
+                            {decodeBase64(title || nodeDetails?.Name?.Value)}
+                          </Heading>
+                        )}
+                      </TitleContainer>
+                    )} */}
+                    <Typography type="H1">
+                      {decodeBase64(nodeDetails?.Name?.Value)}
+                    </Typography>
+                  </RowItem>
+                  {!newNode && (
+                    <ShadowButton
+                      onMouseEnter={() => setSideDetailsHover(true)}
+                      onMouseLeave={() => setSideDetailsHover(false)}
+                      onClick={onSideDetailsClick}
+                      active={sideColumn}
+                      size={RVSizeProp.medium}
+                      rounded="half"
+                    >
+                      <DocIcon size="1.5rem" />
+                    </ShadowButton>
+                  )}
+                  {/* <ShadowButton
+                    // onClick={onSideDetailsClick}
+                    active={sideColumn}
+                    size={RVSizeProp.medium}
+                    rounded="half"
+                    style={{ fontSize: '1.4rem' }}
+                  >
+                    <ChatBubbleSvg />
+                  </ShadowButton> */}
+                  <ShadowButton
+                    onClick={onBookmarkPressed}
+                    active={sideColumn}
+                    size={RVSizeProp.medium}
+                    rounded="half"
+                    style={{ fontSize: '1.4rem' }}
+                  >
+                    <BookmarkSvg outline={bookmarkStatus !== 'liked'} />
+                  </ShadowButton>
                 </>
               )}
               {contribution && (
@@ -185,7 +278,6 @@ const TopBar = ({
                   style={{
                     display: 'flex',
                     flexDirection: 'row',
-                    marginInline: '2rem',
                   }}
                 >
                   <Creators
@@ -194,32 +286,7 @@ const TopBar = ({
                   />
                 </div>
               )}
-              {!newNode && (
-                <Styles.NodeTopBarShadowButton
-                  onMouseEnter={() => setSideDetailsHover(true)}
-                  onMouseLeave={() => setSideDetailsHover(false)}
-                  onClick={onSideDetailsClick}
-                  $isEnabled={sideColumn || sideDetailsHover}
-                  className={
-                    sideColumn
-                      ? 'rv-border-distant rv-default'
-                      : sideDetailsHover
-                      ? 'rv-border-distant rv-default'
-                      : 'rv-border-white rv-distant'
-                  }
-                >
-                  <DocIcon
-                    size={'1.5rem'}
-                    className={
-                      sideColumn
-                        ? 'rv-default'
-                        : sideDetailsHover
-                        ? 'rv-default'
-                        : 'rv-distant'
-                    }
-                  />
-                </Styles.NodeTopBarShadowButton>
-              )}
+
               <Styles.NodeTopBarViewCount>
                 <Eye
                   className="rv-default"

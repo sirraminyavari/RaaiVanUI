@@ -1,6 +1,19 @@
 /**
  * 'SubjectItem' for the time that the screen is big.
  */
+import {
+  Avatar,
+  AvatarGroup,
+  BookmarkSvg,
+  Button,
+  CalendarClearSvg,
+  RowItem,
+  RVColorProp,
+  RVSizeProp,
+  RVVariantProp,
+} from '@cliqmind/rv-components';
+import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
+import { random } from 'helpers/helpers';
 import { decode } from 'js-base64';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -10,6 +23,7 @@ import SubjectClassName from '../items/SubjectClassName';
 import SubjectCreator from '../items/SubjectCreator';
 import SubjectDate from '../items/SubjectDate';
 import SubjectIcon from '../items/SubjectIcon';
+import SubjectStatus from '../items/SubjectStatus';
 import SubjectTitle from '../items/SubjectTitle';
 import SubjectTools from '../items/SubjectTools';
 import SubjectViewCount from '../items/SubjectViewCount';
@@ -76,8 +90,85 @@ const SubjectItemDesktop = ({
 
   return (
     <Root>
-      {/* {console.log(item, 'item')} */}
-      <Container
+      <RowItem
+        onClick={onClick}
+        ActionsComponent={
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              columnGap: '1rem',
+            }}
+          >
+            <Button
+              rounded="half"
+              fullCircle
+              variant={RVVariantProp.white}
+              badge
+            >
+              <BookmarkSvg outline={!isChecked} size="1.6em" />
+            </Button>
+            <Button
+              noWrap
+              badge
+              rounded="half"
+              color={RVColorProp.distant}
+              variant={RVVariantProp.white}
+              style={{ width: '9rem' }}
+            >
+              <CalendarClearSvg outline />
+              {new Date(CreationDate).toLocaleString(undefined, {
+                year: undefined,
+                month: 'short',
+                day: '2-digit',
+                weekday: undefined,
+                hour: undefined,
+                hour12: undefined,
+                minute: undefined,
+                second: undefined,
+              })}
+            </Button>
+            <AvatarGroup>
+              <Tooltip
+                tipId={'SubjectCreator' + random()}
+                effect="solid"
+                place="top"
+                renderContent={() =>
+                  `${decode(Creator.FirstName)} ${decode(Creator.LastName)}`
+                }
+              >
+                <Avatar
+                  rounded="full"
+                  size={RVSizeProp.small}
+                  variant={RVVariantProp.white}
+                  stacked
+                  src={Creator?.ProfileImageURL}
+                />
+              </Tooltip>
+            </AvatarGroup>
+          </div>
+        }
+      >
+        {IconURL && (
+          <Avatar
+            src={IconURL}
+            size={RVSizeProp.medium}
+            variant={RVVariantProp.white}
+            style={{ marginInlineEnd: '1.25rem' }}
+          />
+        )}
+        <span
+          style={{
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            width: '20rem',
+          }}
+        >
+          {decode(Name)}
+        </span>
+      </RowItem>
+      {/* <Container
         liteMode={liteMode}
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
@@ -100,12 +191,12 @@ const SubjectItemDesktop = ({
                 )}
                 {!isSaas && <SubjectViewCount count={VisitsCount} />}
 
-                {/* <div
+                <div
                   style={{
                     display: 'flex',
                     flexGrow: 1,
                   }}
-                /> */}
+                />
               </Details>
             )}
           </Main>
@@ -121,7 +212,7 @@ const SubjectItemDesktop = ({
                 onBookmarLocally={onBookmark && onBookmark}
               />
 
-              {/* <SubjectStatus style={{ width: '16.1rem' }} /> */}
+              <SubjectStatus style={{ width: '16.1rem' }} />
             </>
           )}
           <SubjectCreator
@@ -136,11 +227,11 @@ const SubjectItemDesktop = ({
           selectMode={selectMode}
           onChecked={checkHandler}
         />
-      </Container>
+      </Container> */}
     </Root>
   );
 };
-
+SubjectItemDesktop.displayName = 'SubjectItemDesktop';
 export default SubjectItemDesktop;
 
 const MainContent = styled.div`

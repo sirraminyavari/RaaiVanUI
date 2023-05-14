@@ -16,6 +16,7 @@ import { AUTH_PATH, LOGIN_NAME, ROOT_PATH } from 'constant/constants';
 import { CV_WHITE } from 'constant/CssVariables';
 import { avatarIconURL } from 'helpers/helpers';
 import consoleLogger from 'utils/console/consoleLogger';
+import 'scss/global.scss';
 
 const { RV_RTL, GlobalUtilities } = window;
 

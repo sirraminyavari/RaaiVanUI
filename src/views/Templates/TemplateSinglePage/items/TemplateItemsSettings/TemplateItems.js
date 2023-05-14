@@ -99,11 +99,6 @@ const TemplateItems = () => {
   return (
     <>
       <Styles.TemplateItemContainer>
-        <Styles.HeaderContainer>
-          <Breadcrumb items={breadItems} />
-
-          <ReturnButton onClick={returnToTemplates} />
-        </Styles.HeaderContainer>
         <Styles.TemplateItemRowSection>
           <Styles.TitleIcon src={icon} />
 

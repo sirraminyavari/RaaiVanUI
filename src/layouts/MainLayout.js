@@ -7,7 +7,7 @@ import OpenSidebar from './Sidebar/SidebarOpen';
 import OpenSidebarMobile from './Sidebar/SidebarOpenMobile';
 import CloseSidebar from './Sidebar/SidebarClose';
 import CheckRoute from 'utils/CheckRoute/CheckRoute';
-import * as Styled from './MainLayout.styles';
+// import * as Styled from './MainLayout.styles';
 import SidebarHeader from './Sidebar/items/Header';
 import {
   MOBILE_BOUNDRY,
@@ -21,22 +21,25 @@ import RasoulView from 'views/DevsView/Rasoul/Rasoul';
 import AliView from 'views/DevsView/Ali/Ali';
 import RaminView from 'views/DevsView/Ramin/Ramin';
 import useWindow from 'hooks/useWindowContext';
-import { NavbarContainer } from './Navbar/Navbar.styles';
+// import { NavbarContainer } from './Navbar/Navbar.styles';
 import TestView from 'views/TestView/TestView';
 import { useThemeSlice } from 'store/slice/theme';
 import { selectTheme } from 'store/slice/theme/selectors';
 import { useSidebarSlice } from 'store/slice/sidebar';
 import { selectOnboarding } from 'store/slice/onboarding/selectors';
+import { Scrollbar } from '@cliqmind/rv-components';
+import * as SidebarStyles from './NewSidebar/Sidebar.styles';
+import PrimarySidebar from './NewSidebar/MainSidebar';
 
-const Navbar = lazy(() =>
-  import(/* webpackChunkName: "nav-selected-team-component"*/ './Navbar/Navbar')
-);
+// const Navbar = lazy(() =>
+//   import(/* webpackChunkName: "nav-selected-team-component"*/ './Navbar/Navbar')
+// );
 
-const NavbarInitial = lazy(() =>
-  import(
-    /* webpackChunkName: "nav-not-selected-team-component"*/ './Navbar/NavbarInitial'
-  )
-);
+// const NavbarInitial = lazy(() =>
+//   import(
+//     /* webpackChunkName: "nav-not-selected-team-component"*/ './Navbar/NavbarInitial'
+//   )
+// );
 
 const { RVGlobal } = window;
 const isDev = (RVGlobal || {}).IsDev;
@@ -150,20 +153,27 @@ const Main = () => {
   return (
     <>
       {hasNavSide ? (
-        <Styled.MainContainer>
-          {!hideSidebar && getSidebar()}
-          <Styled.ContentWrapper
+        <SidebarStyles.MainLayout>
+          {/* {!hideSidebar && getSidebar()} */}
+          {/* <Styled.ContentWrapper
             isSidebarOpen={isSidebarOpen}
             isMobile={isMobileScreen}
-          >
-            <Suspense fallback={<NavbarContainer isMobile={isMobileScreen} />}>
+          > */}
+          {/* <Suspense fallback={<NavbarContainer isMobile={isMobileScreen} />}>
               {isTeamSelected ? <Navbar /> : <NavbarInitial />}
-            </Suspense>
+            </Suspense> */}
+          <SidebarStyles.MainLayoutSidebarContainer>
+            <PrimarySidebar />
+          </SidebarStyles.MainLayoutSidebarContainer>
+          <SidebarStyles.MainLayoutContentContainer>
             <Suspense fallback={<LogoLoader />}>
-              <Styled.Content>{switchRoutes}</Styled.Content>
+              <Scrollbar>
+                <>{switchRoutes}</>
+              </Scrollbar>
             </Suspense>
-          </Styled.ContentWrapper>
-        </Styled.MainContainer>
+          </SidebarStyles.MainLayoutContentContainer>
+          {/* </Styled.ContentWrapper> */}
+        </SidebarStyles.MainLayout>
       ) : (
         <>{switchRoutes}</>
       )}

@@ -11,11 +11,5 @@ const TemplateItemSettingExcelRegister = () => {
 
 const ToggleButton = styled(Button).attrs({
   type: 'primary-o',
-})`
-  height: 3rem;
-  max-width: 13.5rem;
-  font-weight: 500;
-  border-radius: 0.78rem;
-  width: 100%;
-`;
+})``;
 export default TemplateItemSettingExcelRegister;

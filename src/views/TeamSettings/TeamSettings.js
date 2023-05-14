@@ -11,6 +11,8 @@ import ImageCropper from 'components/ImageCropper/ImageCropper';
 import CustomInput from './items/CustomInput';
 import TabView from '../../components/TabView/TabView';
 import CloseIcon from '../../components/Icons/CloseIcon/CloseIcon';
+import BreadcrumbLayout from 'layouts/NewSidebar/breadCrumbLayout/breadcrumbLayout';
+import { SettingsSvg } from '@cliqmind/rv-components';
 
 const TeamSettings = (props) => {
   const {
@@ -26,13 +28,27 @@ const TeamSettings = (props) => {
     setApplicationInfo,
     saveInfo,
   } = useTeamSettings(props);
-
+  const breadcrumbs = [
+    {
+      label: RVDic?.TeamManagement,
+      path: '',
+    },
+    {
+      label: 'Template settings',
+      path: '',
+    },
+  ];
   return (
     <Styled.TeamSettingsCardWrapper>
       <Styled.TeamSettingsContainer rtl={rtl}>
-        <Breadcrumb items={breadCrumbItems} />
-
-        <Styled.PageTitle>{RVDic?.TeamManagement}</Styled.PageTitle>
+        <BreadcrumbLayout
+          Icon={SettingsSvg}
+          searchInputPlaceholder={RVDic?.SearchInN.replace(
+            '[n]',
+            RVDic?.Keywords
+          )}
+          routeLinks={breadcrumbs}
+        />
 
         <Styled.FormWrapper>
           <Styled.TeamThumbnailContainer>
@@ -175,16 +191,7 @@ const TeamSettings = (props) => {
           </Styled.FieldWrapper>
 
           <Styled.SettingActionBar>
-            <Button
-              type="primary"
-              style={{
-                height: '3rem',
-                width: '7.6rem',
-                fontSize: '1rem',
-                borderRadius: '0.8rem',
-              }}
-              onClick={saveInfo}
-            >
+            <Button type="primary" fullWidth onClick={saveInfo}>
               {RVDic?.Save}
             </Button>
           </Styled.SettingActionBar>

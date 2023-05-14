@@ -14,11 +14,11 @@ const SubjectItem = ({ ...props }) => {
   return (
     <>
       {/* If True, will render MobileView component */}
-      {DimensionHelper().isTabletOrMobile ? (
+      {/* {DimensionHelper().isTabletOrMobile ? (
         <SubjectItemMobileView {...props} />
-      ) : (
-        <SubjectItemDesktop {...props} />
-      )}
+      ) : ( */}
+      <SubjectItemDesktop {...props} />
+      {/* )} */}
     </>
   );
 };

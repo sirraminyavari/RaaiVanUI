@@ -12,6 +12,7 @@ import { EditableContext } from './FormFill';
 import EditCircleIcon from 'components/Icons/EditIcons/EditCircle';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import { BO_RADIUS_HALF } from 'constant/constants';
+import { Typography } from '@cliqmind/rv-components';
 
 const FormCell = ({
   children,
@@ -91,9 +92,10 @@ const CellName = styled.div`
   // width:  17rem;
   `}
 `;
-const Title = styled(Heading)`
+const Title = styled(Typography)`
   color: ${CV_GRAY};
   padding: 0 1rem 0 1rem;
+  margin-block: 0;
 `;
 const Children = styled.div`
   width: 100%;

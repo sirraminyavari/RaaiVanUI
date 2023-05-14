@@ -131,8 +131,6 @@ const UserGroups = () => {
   return (
     <Styled.UserGroupsContainer rtl={RV_RTL}>
       <Styled.UserGroupsContent>
-        <Breadcrumb items={breadcrumbs} />
-
         <Styled.GroupsContainer>
           <Styled.HeadingWrapper>
             {RVDic?.ManageN.replace('[n]', RVDic.Groups)}

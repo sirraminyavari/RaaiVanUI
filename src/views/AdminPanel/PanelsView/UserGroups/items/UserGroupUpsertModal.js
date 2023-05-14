@@ -136,7 +136,7 @@ const UserGroupUpsertModal = ({
           <ModalStyles.ModalActionBar>
             <Button
               type="primary"
-              style={buttonStyles}
+              // style={buttonStyles}
               onClick={() => handleModalConfirm()}
             >
               {RVDic?.Save}
@@ -144,7 +144,7 @@ const UserGroupUpsertModal = ({
 
             <Button
               type="negative-o"
-              style={buttonStyles}
+              // style={buttonStyles}
               onClick={() => handleModalCancel()}
             >
               {RVDic?.Return}
@@ -155,7 +155,7 @@ const UserGroupUpsertModal = ({
             {!!group && (
               <Button
                 type="negative"
-                style={buttonStyles}
+                // style={buttonStyles}
                 onClick={() => handleDeleteGroup()}
               >
                 {RVDic.RemoveN.replace('[n]', RVDic.Group)}

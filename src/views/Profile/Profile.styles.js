@@ -8,9 +8,7 @@ import {
   BG_GRAY_DARK,
   BG_FREEZED,
   C_GRAY,
-  TBG_DEFAULT,
   BO_FREEZED,
-  TBG_WARM,
   BG_WHITE,
 } from 'constant/Colors';
 import {
@@ -31,7 +29,6 @@ import {
   CV_GRAY,
   CV_GRAY_DARK,
   CV_RED,
-  CV_WHITE,
   TCV_DEFAULT,
   TCV_VERY_TRANSPARENT,
   TCV_WARM,
@@ -52,7 +49,7 @@ export const ProfileViewContainer = styled.div.attrs({
   className: `${BG_GRAY_LIGHT} ${BO_RADIUS_HALF}`,
 })`
   min-height: calc(100vh - 5.5rem);
-  box-shadow: 1px 5px 15px #0000001f;
+  // box-shadow: 1px 5px 15px #0000001f;
   margin: 1.5rem;
   padding: 1.5rem;
   position: relative;
@@ -476,6 +473,7 @@ export const TopicItemIconWrapper = styled.div`
 
 export const TopicItemCreationDate = styled.span`
   font-size: 0.7rem;
+  padding-block: 0.3rem;
   color: ${CV_GRAY};
 `;
 

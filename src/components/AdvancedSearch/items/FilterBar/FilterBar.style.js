@@ -31,6 +31,7 @@ export const BottomRow = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 100%;
+  padding-inline: 2rem;
 `;
 export const TopRow = styled.div`
   display: flex;
@@ -38,8 +39,7 @@ export const TopRow = styled.div`
   align-items: center;
   width: 100%;
   align-self: flex-end;
-  padding-block: 3rem 1rem;
-  // padding-inline: 1rem;
+  padding-block: 1rem 1rem;
   justify-content: space-between;
 `;
 export const Container = styled.div`
@@ -47,7 +47,6 @@ export const Container = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  padding-inline: 2.2rem;
   position: relative;
 `;
 

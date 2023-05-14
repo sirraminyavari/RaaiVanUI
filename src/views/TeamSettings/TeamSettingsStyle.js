@@ -15,8 +15,8 @@ export const TeamSettingsContainer = styled.div`
   direction: ${({ rtl }) => (rtl ? 'rtl' : 'ltr')};
   width: 100%;
   border-radius: 1rem;
-  box-shadow: 1px 3px 20px #0000001f;
-  padding: 4rem 2rem;
+  // box-shadow: 1px 3px 20px #0000001f;
+  padding: 0rem 2rem;
   position: relative;
 `;
 
@@ -49,7 +49,7 @@ export const SelectTitle = styled.div`
 
 export const SettingActionBar = styled.div`
   display: flex;
-  justify-content: flex-start;
-  margin-top: 4rem;
+  justify-content: center;
+  margin-top: 2rem;
   padding: 0 0.2rem;
 `;

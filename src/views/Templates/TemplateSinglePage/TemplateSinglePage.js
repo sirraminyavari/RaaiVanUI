@@ -17,6 +17,7 @@ import { TemplateProvider } from './TemplateProvider';
 import { useDispatch } from 'react-redux';
 import { TEMPLATE_CONTENT } from '../../../constant/constants';
 import { useThemeSlice } from 'store/slice/theme';
+import TemplateSinglePageTopMenu from './TemplateSinglePageTopMenu';
 
 const TemplateSinglePage = () => {
   const dispatch = useDispatch();
@@ -73,11 +74,12 @@ const TemplateSinglePage = () => {
   }, []);
 
   return (
-    <Container>
+    <>
       {loading ? (
         <LogoLoader />
       ) : (
         <TemplateProvider extensions={extensions} service={service}>
+          <TemplateSinglePageTopMenu templatePath={path} />
           <Switch>
             <Route
               exact
@@ -96,7 +98,7 @@ const TemplateSinglePage = () => {
           </Switch>
         </TemplateProvider>
       )}
-    </Container>
+    </>
   );
 };
 const Container = styled.div`

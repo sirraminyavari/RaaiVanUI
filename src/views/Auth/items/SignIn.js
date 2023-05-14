@@ -1,6 +1,7 @@
 /**
  * Sign in page
  */
+import { RVSizeProp } from '@cliqmind/rv-components';
 import Button from 'components/Buttons/Button';
 import Heading from 'components/Heading/Heading';
 import InvisibleIcon from 'components/Icons/InVisible';
@@ -194,40 +195,40 @@ const SignIn = () => {
           }
         />
         {/* <OrgDomains style={common_style} /> */}
-
-        <Button
-          onClick={onSignIn}
-          // disable={!email || !password}
-          type="primary"
-          loading={isFetching}
-          style={{
-            width: '100%',
-            textAlign: 'center',
-            ...common_style,
-            marginTop: '1.75rem',
-          }}
-        >
-          {RVDic.Login}
-        </Button>
-        <Button
-          type="negative-secondary-o"
-          style={{
-            width: '100%',
-            textAlign: 'center',
-            ...common_style,
-            marginBottom: '1rem',
-          }}
-          loading={forgotPassClicked && fetchingFiles}
-          onClick={onForgot}
-        >
-          <ButtonLabel>{RVDic?.ForgotMyPassword}</ButtonLabel>
-        </Button>
-        <CreateAccountButtons
-          isVisible={true}
-          label={RVDic?.CreateAccount}
-          onCreateAccountClick={onCreateAccount}
-          loading={signUpClicked && fetchingFiles}
-        />
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '.7rem' }}>
+          <Button
+            onClick={onSignIn}
+            // disable={!email || !password}
+            type="primary"
+            loading={isFetching}
+            style={{
+              justifyContent: 'center',
+              marginTop: '1.75rem',
+            }}
+            fullWidth
+            size={RVSizeProp.medium}
+          >
+            {RVDic.Login}
+          </Button>
+          <Button
+            type="negative-secondary-o"
+            style={{
+              justifyContent: 'center',
+            }}
+            fullWidth
+            size={RVSizeProp.medium}
+            loading={forgotPassClicked && fetchingFiles}
+            onClick={onForgot}
+          >
+            <ButtonLabel>{RVDic?.ForgotMyPassword}</ButtonLabel>
+          </Button>
+          <CreateAccountButtons
+            isVisible={true}
+            label={RVDic?.CreateAccount}
+            onCreateAccountClick={onCreateAccount}
+            loading={signUpClicked && fetchingFiles}
+          />
+        </div>
         <LastLoginsModal isVisible={signInClicked && lastLoginModal} />
       </Container>
     </Box>
@@ -242,6 +243,9 @@ const Container = styled.form`
   padding-top: 1rem;
 `;
 const ButtonLabel = styled.form`
+  text-align: center;
+  width: 100%;
+  display: block;
   text-transform: lowercase;
   &:first-letter {
     text-transform: uppercase;

@@ -3,6 +3,7 @@ import Button from 'components/Buttons/Button';
 import * as Styled from './CustomDatePicker.styles';
 import RefreshIcon from 'components/Icons/UndoIcon/Undo';
 import useWindow from 'hooks/useWindowContext';
+import { RVSizeProp } from '@cliqmind/rv-components';
 
 const buttonsCommonStyles = {
   padding: '0.3rem 0',
@@ -62,10 +63,13 @@ const DatePickerFooter = (props) => {
               data-span={footer.dateSpan}
               onClick={onFooterClick}
               type={isFooterActive ? 'primary' : 'primary-o'}
-              style={{
-                ...buttonsCommonStyles,
-                backgroundColor: !isFooterActive && 'transparent',
-              }}
+              style={
+                {
+                  // ...buttonsCommonStyles,
+                  // backgroundColor: !isFooterActive && 'transparent',
+                }
+              }
+              size={RVSizeProp.small}
             >
               {footer.title}
             </Button>

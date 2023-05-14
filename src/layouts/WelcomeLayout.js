@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import classNames from 'classnames';
 import { BO_RADIUS_UNIT } from 'constant/constants';
-import { BG_GRAY_LIGHT } from 'constant/Colors';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 
@@ -106,7 +105,7 @@ export default WelcomeLayout;
 const WelcomeLayoutContainer = styled.div`
   ${({ Outline = true }) =>
     Outline &&
-    `box-shadow: 1px 5px 15px #0000001f;
+    `
   min-height: calc(100vh - 10rem);
   margin-inline: 1rem !important;
   `}
@@ -132,7 +131,7 @@ const WelcomeLayoutContainerWithScrollbar = styled(ScrollBarProvider).attrs({
 })`
   ${({ Outline = true }) =>
     Outline &&
-    `box-shadow: 1px 5px 15px #0000001f;
+    `
     height: calc(100vh - 6rem) !important;
   margin-inline: 1rem !important;
   `}

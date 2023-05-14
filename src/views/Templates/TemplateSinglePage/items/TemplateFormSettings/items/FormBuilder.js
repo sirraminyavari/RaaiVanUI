@@ -79,12 +79,6 @@ const FormBuilder = ({ placeholderProps }) => {
   return (
     <>
       <Styles.FormBuilderLayout $rtl={rtl}>
-        <Styles.HeaderContainer>
-          <Breadcrumb items={breadItems} />
-
-          <ReturnButton onClick={returnToTemplates} />
-        </Styles.HeaderContainer>
-
         <Droppable droppableId={FORM_BUILDER_ID}>
           {(provided, snapshot) => (
             <DroppableContainer

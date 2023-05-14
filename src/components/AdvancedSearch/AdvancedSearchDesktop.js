@@ -73,7 +73,9 @@ const AdvanceSearchDesktop = ({
     if (isProfile) getRelatedNodes();
   }, []);
 
-  useEffect(() => setIsBookMarked(bookmarked === true), [bookmarked]);
+  useEffect(() => {
+    setIsBookMarked(bookmarked === true);
+  }, [bookmarked]);
 
   useEffect(() => {
     const { offsetTop } = advancedSearchButtonRef?.current || {};
@@ -159,13 +161,13 @@ const AdvanceSearchDesktop = ({
   return (
     <Container
       isAdvancedShow={isAdvancedSearch}
-      className={'rv-bg-color-white'}
+      // className={'rv-bg-color-white'}
       itemSelectionMode={itemSelectionMode}
       RV_RTL={RV_RTL}
     >
       <ScrollProvider
         className={`${
-          itemSelectionMode ? 'rv-bg-color-white' : 'rv-bg-color-light-gray'
+          itemSelectionMode ? '' : 'rv-bg-color-light-gray'
         } rv-border-radius-half`}
         itemSelectionMode={itemSelectionMode}
         isAdvancedShow={!itemSelectionMode && isAdvancedSearch}
@@ -192,9 +194,7 @@ const AdvanceSearchDesktop = ({
               itemSelectionMode={itemSelectionMode}
               isAdvancedShow={isAdvancedSearch}
               className={`${
-                itemSelectionMode
-                  ? 'rv-bg-color-white'
-                  : 'rv-bg-color-light-gray'
+                itemSelectionMode ? '' : 'rv-bg-color-light-gray'
               } rv-border-radius-half`}
               fullWidth={isAdvancedSearch}
             >

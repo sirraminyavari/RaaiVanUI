@@ -68,14 +68,14 @@ const Collector = ({
   return (
     <Maintainer
       isAdvancedShow={sideColumn}
-      className={`${'rv-bg-color-white'} rv-border-radius-half`}
+      // className={`${'rv-bg-color-white'} rv-border-radius-half`}
       portalMode={!isTabletOrMobile}
     >
-      <WelcomeLayout centerize>
+      <WelcomeLayout centerize noOutline>
         <>
           <div
             style={{
-              padding: '0 3.5rem 3.5rem',
+              // padding: '0 3.5rem 3.5rem',
               maxWidth: '100%',
               overflow: 'hidden',
             }}

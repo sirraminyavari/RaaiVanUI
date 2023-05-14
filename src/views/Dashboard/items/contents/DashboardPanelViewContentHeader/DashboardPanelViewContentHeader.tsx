@@ -91,7 +91,6 @@ const DashboardPanelViewContentHeader = ({
           </Styles.DashboardPanelViewContentHeaderItemsCount>
         </Styles.DashboardPanelViewContentHeaderTitleContainer>
         <Styles.DashboardPanelViewContentHeaderSearchContainer>
-          {/* @ts-expect-error */}
           <SearchInput placeholder="جستجو در اقدام‌های انجام شده پروژه" />
         </Styles.DashboardPanelViewContentHeaderSearchContainer>
       </Styles.DashboardPanelViewContentHeaderContainer>

@@ -1,0 +1,16 @@
+@import '@cliqmind/rv-components/scss/modules/default.scss';
+// @import '@cliqmind/rv-components/scss/modules/normalize';
+@import '@cliqmind/rv-components/scss/GlobalStyles.scss';
+@import '@cliqmind/rv-components/scss/modules/font-IRANSans';
+@import '@cliqmind/rv-components/scss/modules/font-Roboto';
+
+html,
+body {
+  font-family: Roboto, IRANSans, -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif,
+    'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji',
+    Vazir;
+  background-color: hsl(var(--white));
+  color: hsl(var(--black));
+  overflow: overlay;
+}

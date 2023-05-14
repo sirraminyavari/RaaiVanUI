@@ -18,7 +18,6 @@ export const UserGroupsContainer = styled.div`
 UserGroupsContainer.displayName = 'UserGroupsContainer';
 
 export const UserGroupsContent = styled.div`
-  ${ViewContentCard}
   ${FLEX_RSB}
 `;
 UserGroupsContent.displayName = 'UserGroupsContent';
@@ -41,6 +40,7 @@ export const HeadingWrapper = styled(Heading).attrs({
   type: 'H1',
 })`
   font-size: 1.375rem;
+  margin-top: 0;
   margin-bottom: 2.5rem;
 `;
 HeadingWrapper.displayName = 'HeadingWrapper';
