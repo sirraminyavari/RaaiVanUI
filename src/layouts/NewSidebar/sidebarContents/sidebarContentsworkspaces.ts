@@ -8,6 +8,7 @@ const SidebarContentWorkspaces: SidebarContentFunction = ({
   setIsSubMenuToggled,
   urlParams,
   selectedApplication,
+  classesTree,
 }) => {
   const defaults = SidebarContentDefault({
     history,
@@ -15,6 +16,7 @@ const SidebarContentWorkspaces: SidebarContentFunction = ({
     setIsSubMenuToggled,
     urlParams,
     selectedApplication,
+    classesTree,
   });
   return {
     mainSidebarPrimaryLinks: [

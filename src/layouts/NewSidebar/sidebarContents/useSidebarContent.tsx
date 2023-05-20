@@ -26,6 +26,16 @@ interface useSidebarContentPropsType {
   isSubMenuToggled: boolean;
   setIsSubMenuToggled: Dispatch<SetStateAction<boolean>>;
   urlParams: Record<string | number, string | number>;
+  history: History<unknown>;
+  classesTree: any[];
+  selectedApplication: {
+    ApplicationID: string;
+    WorkspaceID: string;
+    Title: string;
+    Tagline: string;
+    Website: string;
+    About: string;
+  };
 }
 interface useSidebarContentReturnType {
   mainSidebarPrimaryLinks?: RVSidebarMain['primaryLinks'];
@@ -40,28 +50,17 @@ export type SidebarContentFunction<T = Record<string, any>> = ({
   history,
   isSubMenuToggled,
   setIsSubMenuToggled,
-}: useSidebarContentPropsType &
-  T & {
-    history: History;
-    selectedApplication: {
-      ApplicationID: string;
-      WorkspaceID: string;
-      Title: string;
-      Tagline: string;
-      Website: string;
-      About: string;
-    };
-  }) => useSidebarContentReturnType;
+}: useSidebarContentPropsType & T) => useSidebarContentReturnType;
 
 const useSidebarContent = ({
   isSubMenuToggled,
   setIsSubMenuToggled,
   urlParams,
+  history,
+  selectedApplication,
+  classesTree,
 }: useSidebarContentPropsType) => {
-  const history = useHistory();
   const pathname = history.location.pathname;
-  const { tree } = useSelector(selectSidebar);
-  const { currentApp } = useSelector(selectApplication);
 
   const currentRouteSidebarProps = useMemo(() => {
     switch (true) {
@@ -71,15 +70,17 @@ const useSidebarContent = ({
           isSubMenuToggled,
           setIsSubMenuToggled,
           urlParams,
-          selectedApplication: currentApp,
+          selectedApplication,
+          classesTree,
         });
-      case pathname === `/${PROFILE_USER}`:
+      case pathname.startsWith(`/${PROFILE_USER}`):
         return SidebarContentProfile({
           history,
           isSubMenuToggled,
           setIsSubMenuToggled,
           urlParams,
-          selectedApplication: currentApp,
+          selectedApplication,
+          classesTree,
         });
 
       case pathname === CONFIG_USERS_PATH:
@@ -90,16 +91,17 @@ const useSidebarContent = ({
           isSubMenuToggled,
           setIsSubMenuToggled,
           urlParams,
-          selectedApplication: currentApp,
+          selectedApplication,
+          classesTree,
         });
-      case pathname === CLASSES_PATH:
+      case pathname.startsWith(CLASSES_PATH):
         return SidebarContentClasses({
           history,
           isSubMenuToggled,
           setIsSubMenuToggled,
           urlParams,
-          sidebarTree: tree,
-          selectedApplication: currentApp,
+          selectedApplication,
+          classesTree,
         });
       case pathname === HOME_PATH:
       case pathname === TEMPLATES_SETTING_PATH:
@@ -109,16 +111,17 @@ const useSidebarContent = ({
           isSubMenuToggled,
           setIsSubMenuToggled,
           urlParams,
-          selectedApplication: currentApp,
+          selectedApplication,
+          classesTree,
         });
     }
   }, [
-    currentApp,
+    selectedApplication,
     history,
     isSubMenuToggled,
     pathname,
     setIsSubMenuToggled,
-    tree,
+    classesTree,
     urlParams,
   ]);
 

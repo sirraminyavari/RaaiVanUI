@@ -1,7 +1,7 @@
 import { useEffect, memo, useState, createContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Styled from 'views/Profile/Profile.styles';
-import Breadcrumb from 'components/Breadcrumb/Breadcrumb';
+import BreadcrumbLayout from 'layouts/NewSidebar/breadCrumbLayout/breadcrumbLayout';
 import ThemeToggle from 'components/Toggle/Toggle';
 import { C_DISTANT, C_GRAY_DARK } from 'constant/Colors';
 import useWindow from 'hooks/useWindowContext';
@@ -16,6 +16,12 @@ import { saveUserSettings } from 'apiHelper/apiFunctions';
 import InfoToast from 'components/toasts/info-toast/InfoToast';
 import { useThemeSlice } from 'store/slice/theme';
 import { selectTheme } from 'store/slice/theme/selectors';
+import {
+  RVColorProp,
+  RVSizeProp,
+  RVVariantProp,
+  ShirtSvg,
+} from '@cliqmind/rv-components';
 
 export const CustomSettingContext = createContext({});
 
@@ -104,57 +110,64 @@ const ProfileCustomization = ({ route }) => {
   }, []);
 
   return (
-    <Styled.CustomizationView dir={RV_Float}>
-      <CustomSettingContext.Provider value={{ isSidebarCollapsed }}>
-        <Styled.ProfileViewContainer
-          style={{
-            width: 'calc(100% - 19rem)',
-            margin: '0',
-          }}
-        >
-          <Breadcrumb items={breadcrumbItems} />
-          <Styled.ProfileTitleWrapper>
-            <Styled.ProfileTitle>{PAGE_TITLE}</Styled.ProfileTitle>
-            <Styled.ChooseThemeTitle>
-              {RVDic.ThemeSelect}
-            </Styled.ChooseThemeTitle>
-            <Styled.PreviewGroups>
-              {allThemes.map((preview, key) => (
-                <ThemePreview key={key} preview={preview} />
-              ))}
-            </Styled.PreviewGroups>
-          </Styled.ProfileTitleWrapper>
-        </Styled.ProfileViewContainer>
-        <Styled.ProfileViewContainer className="profile-theme-setting">
-          <Styled.ThemeSettingTitle>
-            {RVDic.ThemeSettings}
-          </Styled.ThemeSettingTitle>
-          <ThemeToggle
-            // disable={isSavingMenuSetting}
-            onToggle={handleMenuCollapse}
-            isChecked={isSidebarCollapsed}
-            title="منو به صورت پیشفرض باز باشد"
-            titleClass={`${C_GRAY_DARK} profile-theme-toggle`}
-          />
-          {!isSaas && (
+    <>
+      <BreadcrumbLayout
+        Icon={(props) => <ShirtSvg {...props} outline />}
+        variant={RVVariantProp.white}
+        size={RVSizeProp.medium}
+        color={RVColorProp.grayDark}
+        routeLinks={[{ label: 'Personalization', path: '' }]}
+      />
+      <Styled.CustomizationView dir={RV_Float}>
+        <CustomSettingContext.Provider value={{ isSidebarCollapsed }}>
+          <Styled.ProfileViewContainer
+            style={{
+              margin: '0',
+              width: '100%',
+            }}
+          >
+            <Styled.ProfileTitleWrapper>
+              <Styled.ChooseThemeTitle>
+                {RVDic.ThemeSelect}
+              </Styled.ChooseThemeTitle>
+              <Styled.PreviewGroups>
+                {allThemes.map((preview, key) => (
+                  <ThemePreview key={key} preview={preview} />
+                ))}
+              </Styled.PreviewGroups>
+            </Styled.ProfileTitleWrapper>
+          </Styled.ProfileViewContainer>
+          <div className="profile-theme-setting" style={{ flexShrink: 0 }}>
+            <Styled.ThemeSettingTitle>
+              {RVDic.ThemeSettings}
+            </Styled.ThemeSettingTitle>
             <ThemeToggle
-              onToggle={handlePattern}
-              isChecked={hasSidebarPattern}
-              title={RVDic.RV.Settings.ColorfulBubbles}
+              // disable={isSavingMenuSetting}
+              onToggle={handleMenuCollapse}
+              isChecked={isSidebarCollapsed}
+              title="منو به صورت پیشفرض باز باشد"
               titleClass={`${C_GRAY_DARK} profile-theme-toggle`}
             />
-          )}
-          <ThemeToggle
-            disable={true}
-            onToggle={handleDarkMode}
-            isChecked={isDarkMode}
-            title={RVDic.DarkMode + ` (${RVDic.Inactive})`}
-            //TODO: Change color when dark mode is available.
-            titleClass={`${C_DISTANT} profile-theme-toggle`}
-          />
-        </Styled.ProfileViewContainer>
-      </CustomSettingContext.Provider>
-    </Styled.CustomizationView>
+            {!isSaas && (
+              <ThemeToggle
+                onToggle={handlePattern}
+                isChecked={hasSidebarPattern}
+                title={RVDic.RV.Settings.ColorfulBubbles}
+                titleClass={`${C_GRAY_DARK} profile-theme-toggle`}
+              />
+            )}
+            <ThemeToggle
+              disable={true}
+              onToggle={handleDarkMode}
+              isChecked={isDarkMode}
+              title={RVDic.DarkMode + ` (${RVDic.Inactive})`}
+              //TODO: Change color when dark mode is available.
+              titleClass={`${C_DISTANT} profile-theme-toggle`}
+            />
+          </div>
+        </CustomSettingContext.Provider>
+      </Styled.CustomizationView>
+    </>
   );
 };
 

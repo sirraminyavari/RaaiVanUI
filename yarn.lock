@@ -1122,10 +1122,10 @@
   resolved "https://registry.yarnpkg.com/@cliqmind/react-table/-/react-table-7.8.0-dev.1.tgz#31b9c5e01d6d389d4264ce0cc0f372ee1c91b79f"
   integrity sha512-J38EyJqcs/fa8mri/0GBwaghX9pMpsb4Y+qKkVrzsLGCGHvtXNpQuMdynINaAxHAHvY1245SrLMfeUhsxNKaFg==
 
-"@cliqmind/rv-components@0.11.8-dev":
-  version "0.11.8-dev"
-  resolved "https://registry.yarnpkg.com/@cliqmind/rv-components/-/rv-components-0.11.8-dev.tgz#d5485e3f3f62993cb5e3be794e6f5e2e684b4cad"
-  integrity sha512-HIr30QLfe/wimkUP9G+t90MHMOed1dx6MF2PoaUMcIy6N1aSoz0qJrKYC79yk2mHp+2w2SeC2P1nUzvvw59ZMw==
+"@cliqmind/rv-components@^0.4.1-dev":
+  version "0.4.1-dev"
+  resolved "https://registry.yarnpkg.com/@cliqmind/rv-components/-/rv-components-0.4.1-dev.tgz#d186814fa362d4c4180f90f012ed33c5d45249f0"
+  integrity sha512-eH7cXoPgLWBTOq721kepIrSvXemLwYvbdL4CpaxUzdIoI1n7rubiMJnuVIqYtEo63IeOJ0C9QytKDYPxJVk51w==
   dependencies:
     clsx "^1.2.1"
     lodash "^4.17.21"

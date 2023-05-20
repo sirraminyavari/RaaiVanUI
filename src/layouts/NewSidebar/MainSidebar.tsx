@@ -15,16 +15,26 @@ import {
   PROFILE_USER,
   TEAM_SETTINGS_PATH,
 } from 'constant/constants';
+import { selectSidebar } from 'store/slice/sidebar/selectors';
 
 const PrimarySidebar = () => {
   const history = useHistory();
   const [isSubMenuToggled, setIsSubMenuToggled] = useState(false);
   const urlParams = useParams();
+  const { currentApp } = useSelector(selectApplication);
+  const { tree } = useSelector(selectSidebar);
   const {
     mainSidebarPrimaryLinks,
     mainSidebarSecondaryLinks,
     subSidebarLinks,
-  } = useSidebarContent({ isSubMenuToggled, setIsSubMenuToggled, urlParams });
+  } = useSidebarContent({
+    isSubMenuToggled,
+    setIsSubMenuToggled,
+    urlParams,
+    history,
+    selectedApplication: currentApp,
+    classesTree: tree,
+  });
   const workspaceApplication = useSelector(selectApplication);
 
   useEffect(() => {
@@ -37,7 +47,7 @@ const PrimarySidebar = () => {
       ):
       case history.location.pathname === CONFIG_USERS_PATH:
       case history.location.pathname === CONFIG_GROUPS_PATH:
-      case history.location.pathname === `/${PROFILE_USER}`:
+      case history.location.pathname.startsWith(`/${PROFILE_USER}`):
         setIsSubMenuToggled(true);
         break;
       case history.location.pathname === HOME_PATH:
@@ -62,9 +72,9 @@ const PrimarySidebar = () => {
         menuSubTitle={decodeBase64(workspaceApplication.currentApp?.Title)}
         menuTitle={decodeBase64(workspaceApplication.currentApp?.Website)}
         open={isSubMenuToggled}
-        CloseTrigger={setIsSubMenuToggled}
+        // CloseTrigger={setIsSubMenuToggled}
         links={subSidebarLinks || []}
-        activeLink={history.location.pathname}
+        activeLink={`${history.location.pathname}${history.location.search}`}
         className={styles.sidebarSubMenu}
       />
     </div>
