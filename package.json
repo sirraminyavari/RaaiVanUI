@@ -6,7 +6,7 @@
   "dependencies": {
     "@atlaskit/tree": "^8.6.0",
     "@cliqmind/react-table": "^7.8.0-dev.1",
-    "@cliqmind/rv-components": "0.11.8-dev",
+    "@cliqmind/rv-components": "^0.4.1-dev",
     "@draft-js-plugins/editor": "^4.1.0",
     "@draft-js-plugins/mention": "^4.5.1",
     "@lottiefiles/react-lottie-player": "^3.4.1",

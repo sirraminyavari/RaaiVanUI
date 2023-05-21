@@ -157,12 +157,12 @@ export const CustomInput = styled(Input)`
   }
 `;
 export const AdvancedFilterDialog = styled.div`
-  position: absolute;
-  background-color: ${CV_WHITE};
-  top: ${({ top }) => top + 53 + 'px'};
-  left: ${({ left }) => left + 'px'};
+  position: sticky;
+  // background-color: ${CV_WHITE};
+  top: 0;
+  // left: ${({ left }) => left + 'px'};
   width: 30rem;
   min-height: 10rem;
   z-index: ${GlobalUtilities.zindex.alert()};
-  box-shadow: 1px 3px 20px ${CV_DISTANT};
+  // box-shadow: 1px 3px 20px ${CV_DISTANT};
 `;

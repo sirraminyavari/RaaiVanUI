@@ -68,7 +68,7 @@ const Button = forwardRef<HTMLButtonElement, IButton>(
             : undefined
         }
         className={classNames(classes || className)}
-        style={{ boxSizing: 'content-box', ...style }}
+        style={{ ...style }}
         disabled={disable}
         onClick={disable || loading ? undefined : onClick}
         {...(!isCustomButton && resolveClass({ type }))}

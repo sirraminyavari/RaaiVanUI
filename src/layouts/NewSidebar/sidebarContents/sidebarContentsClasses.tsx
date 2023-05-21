@@ -15,6 +15,7 @@ import {
   RVAvatar,
   RVColorProp,
   RVSizeProp,
+  RVSvgProps,
   RVVariantProp,
   SettingsSvg,
   ShapesSvg,
@@ -35,14 +36,12 @@ import SidebarContentDefault from './sidebarContentsDefault';
 import { decodeBase64 } from 'helpers/helpers';
 import useWindowContext from 'hooks/useWindowContext';
 
-const SidebarContentClasses: SidebarContentFunction<{
-  sidebarTree: Record<string, any>;
-}> = ({
+const SidebarContentClasses: SidebarContentFunction = ({
   isSubMenuToggled,
   setIsSubMenuToggled,
   history,
   urlParams,
-  sidebarTree = {},
+  classesTree = [],
   selectedApplication,
 }) => {
   const { RVGlobal } = useWindowContext();
@@ -52,11 +51,12 @@ const SidebarContentClasses: SidebarContentFunction<{
     setIsSubMenuToggled,
     urlParams,
     selectedApplication,
+    classesTree,
   });
 
   const ClassAvatar =
     (avatarURL: string) =>
-    ({ className, ...props }: RVAvatar) =>
+    ({ className, ...props }: RVSvgProps) =>
       (
         <div
           className={className}
@@ -68,7 +68,7 @@ const SidebarContentClasses: SidebarContentFunction<{
           }}
         >
           <Avatar
-            {...props}
+            // {...props}
             src={avatarURL}
             size={RVSizeProp.small}
             style={{
@@ -203,11 +203,12 @@ const SidebarContentClasses: SidebarContentFunction<{
     subSidebarLinks: [
       ...(defaults?.subSidebarLinks || []),
       {
-        badge: sidebarTree.length,
+        badge: classesTree.length,
         title: 'Everything',
         Icon: GridSvg,
         onClick: () => {
           history.push(CLASSES_PATH);
+          console.log(`${CLASSES_PATH}`);
         },
         path: `${CLASSES_PATH}`,
         id: `${CLASSES_PATH}`,
@@ -232,7 +233,7 @@ const SidebarContentClasses: SidebarContentFunction<{
         path: `${CLASSES_PATH}?drafts=1`,
         id: `${CLASSES_PATH}?drafts=1`,
       },
-      ...sidebarTree.map((item) => {
+      ...classesTree.map((item) => {
         const title = decodeBase64(item.TypeName);
         if (item.Sub)
           return {

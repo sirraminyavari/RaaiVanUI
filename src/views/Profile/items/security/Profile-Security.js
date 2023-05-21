@@ -6,6 +6,13 @@ import TwoFactorAuthContent from './TwoFactorAuth';
 import { USER_PATH, USER_SECURITY_PATH } from 'constant/constants';
 import useWindow from 'hooks/useWindowContext';
 import { getUser } from 'apiHelper/apiFunctions';
+import BreadcrumbLayout from 'layouts/NewSidebar/breadCrumbLayout/breadcrumbLayout';
+import {
+  RVColorProp,
+  RVSizeProp,
+  RVVariantProp,
+  ShieldSvg,
+} from '@cliqmind/rv-components';
 
 const ProfileSecurity = ({ route }) => {
   const { User } = route || {};
@@ -73,16 +80,24 @@ const ProfileSecurity = ({ route }) => {
   }, [User]);
 
   return (
-    <Styled.ProfileViewContainer>
-      <Breadcrumb items={breadcrumbItems} />
-      <Styled.ProfileTitleWrapper>
-        <Styled.ProfileTitle>{PAGE_TITLE}</Styled.ProfileTitle>
-      </Styled.ProfileTitleWrapper>
-      <Styled.ProfileContentWrapper>
-        <ChangePasswordContent user={authUser} captchaToken={captchaToken} />
-        <TwoFactorAuthContent user={authUser} />
-      </Styled.ProfileContentWrapper>
-    </Styled.ProfileViewContainer>
+    <>
+      <BreadcrumbLayout
+        Icon={(props) => <ShieldSvg {...props} outline />}
+        variant={RVVariantProp.white}
+        size={RVSizeProp.medium}
+        color={RVColorProp.grayDark}
+        routeLinks={[{ label: 'Security & Authentication', path: '' }]}
+      />
+      <Styled.ProfileViewContainer>
+        <Styled.ProfileTitleWrapper>
+          <Styled.ProfileTitle>{PAGE_TITLE}</Styled.ProfileTitle>
+        </Styled.ProfileTitleWrapper>
+        <Styled.ProfileContentWrapper>
+          <ChangePasswordContent user={authUser} captchaToken={captchaToken} />
+          <TwoFactorAuthContent user={authUser} />
+        </Styled.ProfileContentWrapper>
+      </Styled.ProfileViewContainer>
+    </>
   );
 };
 

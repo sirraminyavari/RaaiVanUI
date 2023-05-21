@@ -54,6 +54,7 @@ export const ProfileViewContainer = styled.div.attrs({
   padding: 1.5rem;
   position: relative;
   user-select: none;
+  flex-shrink: 0;
 
   .profile-image-crop-modal {
     color: ${TCV_DEFAULT};
@@ -153,17 +154,6 @@ export const CustomizationView = styled.div`
 
   .profile-theme-toggle {
     margin: 0.5rem 0;
-  }
-
-  .profile-theme-setting {
-    min-width: 18rem;
-    min-height: 10rem;
-    margin: 0;
-    ${({ dir }) => `margin-${dir}:1rem;`}
-    padding: 1rem;
-    text-align: center;
-    position: fixed;
-    ${RV_RevFloat}: 1rem;
   }
 `;
 
