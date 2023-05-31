@@ -4,7 +4,7 @@ import { TC_DEFAULT } from 'constant/Colors';
 import * as Styled from 'views/Profile/Profile.styles';
 import useWindow from 'hooks/useWindowContext';
 import TwoFactorOptions from './TwoFactorOptions';
-import TwoFactorToggle from 'components/Toggle/Toggle';
+import TwoFactorToggle from 'components/Buttons/Toggle/Toggle';
 import AnimatedInput from 'components/Inputs/AnimatedInput';
 import Button from 'components/Buttons/Button';
 import AccountManIcon from 'components/Icons/AccountManIcon/AccountManIcon';

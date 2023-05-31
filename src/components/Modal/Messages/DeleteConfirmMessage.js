@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { TC_DEFAULT } from 'constant/Colors';
-import { CV_GRAY_DARK, CV_RED } from 'constant/CssVariables';
+import { CV_GRAY_DARK, CV_RED, TCV_DEFAULT } from 'constant/CssVariables';
+import { RVColorProp } from '@cliqmind/rv-components';
 
 /**
  *
@@ -19,10 +19,9 @@ import { CV_GRAY_DARK, CV_RED } from 'constant/CssVariables';
 const DeleteConfirmMSG = ({ title, Icon, question, warning }) => {
   return (
     <>
-      <TextContainer bottomMargin="1.8rem">
+      <TextContainer bottomMargin="1.8rem" className={RVColorProp.distant}>
         <Icon
-          className={TC_DEFAULT}
-          style={{ marginInlineEnd: '0.3rem' }}
+          style={{ marginInlineEnd: '0.3rem', color: TCV_DEFAULT }}
           size="1.2rem"
         />
         {title}

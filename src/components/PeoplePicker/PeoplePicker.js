@@ -6,7 +6,7 @@ import UndoIcon from 'components/Icons/UndoIcon/Undo';
 import LogoLoader from 'components/Loaders/LogoLoader/LogoLoader';
 import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 import SimpleListViewer from 'components/SimpleListViewer/SimpleListViewer';
-import Toggle from 'components/Toggle/Toggle';
+import Toggle from 'components/Buttons/Toggle/Toggle';
 import { C_DISTANT } from 'constant/Colors';
 import { CV_DISTANT, CV_FREEZED, CV_RED } from 'constant/CssVariables';
 import { decodeBase64, encodeBase64 } from 'helpers/helpers';

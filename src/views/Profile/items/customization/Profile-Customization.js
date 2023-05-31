@@ -2,7 +2,7 @@ import { useEffect, memo, useState, createContext } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import * as Styled from 'views/Profile/Profile.styles';
 import BreadcrumbLayout from 'layouts/NewSidebar/breadCrumbLayout/breadcrumbLayout';
-import ThemeToggle from 'components/Toggle/Toggle';
+import ThemeToggle from 'components/Buttons/Toggle/Toggle';
 import { C_DISTANT, C_GRAY_DARK } from 'constant/Colors';
 import useWindow from 'hooks/useWindowContext';
 import ThemePreview from './ThemePreview';
@@ -74,10 +74,11 @@ const ProfileCustomization = ({ route }) => {
     });
   };
 
-  const handleMenuCollapse = (toggleValue) => {
-    setIsSidebarCollapsed(toggleValue);
+  const handleMenuCollapse = (event) => {
+    const isToggled = event.currentTarget.value === 'on';
+    setIsSidebarCollapsed(isToggled);
 
-    saveUserSettings(SIDEBAR_WINDOW, toggleValue)
+    saveUserSettings(SIDEBAR_WINDOW, isToggled)
       .then((response) => {
         // console.log(response);
         if (response?.ErrorText) {
@@ -123,48 +124,40 @@ const ProfileCustomization = ({ route }) => {
           <Styled.ProfileViewContainer
             style={{
               margin: '0',
-              width: '100%',
+              width: '70%',
             }}
           >
+            <div className="profile-theme-setting" style={{ flexShrink: 0 }}>
+              <Styled.ThemeSettingTitle>
+                {RVDic.ThemeSettings}
+              </Styled.ThemeSettingTitle>
+              <ThemeToggle
+                // disable={isSavingMenuSetting}
+                onChange={handleMenuCollapse}
+                value={isSidebarCollapsed}
+                title="Action menu should be open by default"
+                titleClass={`${C_GRAY_DARK} profile-theme-toggle`}
+              />
+              {!isSaas && (
+                <ThemeToggle
+                  onToggle={handlePattern}
+                  isChecked={hasSidebarPattern}
+                  title={RVDic.RV.Settings.ColorfulBubbles}
+                  titleClass={`profile-theme-toggle`}
+                />
+              )}
+            </div>
             <Styled.ProfileTitleWrapper>
               <Styled.ChooseThemeTitle>
                 {RVDic.ThemeSelect}
               </Styled.ChooseThemeTitle>
               <Styled.PreviewGroups>
-                {allThemes.map((preview, key) => (
+                {['default', 'dark', 'amoled'].map((preview, key) => (
                   <ThemePreview key={key} preview={preview} />
                 ))}
               </Styled.PreviewGroups>
             </Styled.ProfileTitleWrapper>
           </Styled.ProfileViewContainer>
-          <div className="profile-theme-setting" style={{ flexShrink: 0 }}>
-            <Styled.ThemeSettingTitle>
-              {RVDic.ThemeSettings}
-            </Styled.ThemeSettingTitle>
-            <ThemeToggle
-              // disable={isSavingMenuSetting}
-              onToggle={handleMenuCollapse}
-              isChecked={isSidebarCollapsed}
-              title="منو به صورت پیشفرض باز باشد"
-              titleClass={`${C_GRAY_DARK} profile-theme-toggle`}
-            />
-            {!isSaas && (
-              <ThemeToggle
-                onToggle={handlePattern}
-                isChecked={hasSidebarPattern}
-                title={RVDic.RV.Settings.ColorfulBubbles}
-                titleClass={`${C_GRAY_DARK} profile-theme-toggle`}
-              />
-            )}
-            <ThemeToggle
-              disable={true}
-              onToggle={handleDarkMode}
-              isChecked={isDarkMode}
-              title={RVDic.DarkMode + ` (${RVDic.Inactive})`}
-              //TODO: Change color when dark mode is available.
-              titleClass={`${C_DISTANT} profile-theme-toggle`}
-            />
-          </div>
         </CustomSettingContext.Provider>
       </Styled.CustomizationView>
     </>

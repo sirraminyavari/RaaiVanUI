@@ -13,7 +13,7 @@ import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
 import ClassItem from './ClassItem';
 import ScrollBarProvider from 'components/ScrollBarProvider/ScrollBarProvider';
 import { decodeBase64 } from 'helpers/helpers';
-import Toggle from 'components/Toggle/Toggle';
+import Toggle from 'components/Buttons/Toggle/Toggle';
 
 const { RV_RTL, RVDic } = window || {};
 
