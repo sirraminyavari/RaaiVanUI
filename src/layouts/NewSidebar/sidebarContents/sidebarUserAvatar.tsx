@@ -7,11 +7,15 @@ import {
 } from '@cliqmind/rv-components';
 import WithAvatar from 'components/Avatar/WithAvatar';
 import Button from 'components/Buttons/Button';
-import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
 import { PROFILE_USER } from 'constant/constants';
-import { useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
 import { selectAuth } from 'store/slice/auth/selectors';
+import { useHistory } from 'react-router-dom';
+import { useAuthSlice } from 'store/slice/auth';
+import Popover from '@mui/base/PopperUnstyled';
+import { useState } from 'react';
+import styles from './sidebarUserAvatar.module.scss';
+import clsx from 'clsx';
 
 const AvatarUser = WithAvatar({
   Component: Avatar,
@@ -20,24 +24,31 @@ const AvatarUser = WithAvatar({
 
 const SidebarUserAvatar = (props: Record<string, any>) => {
   const { authUser } = useSelector(selectAuth);
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const [open, setOpen] = useState<boolean>(false);
+  const [anchorEl, setAnchorEl] = useState<HTMLDivElement>();
+
+  const { actions: authActions } = useAuthSlice();
+
+  const onLogoutDone = () => {};
+
+  const onLogoutError = (logoutError) => {
+    console.log(logoutError);
+  };
+
+  //! Logs user out from application.
+  const handleLogout = () => {
+    dispatch(authActions.logout({ done: onLogoutDone, error: onLogoutError }));
+    setOpen((prev) => !prev);
+  };
   return (
-    <Tooltip
-      tipId={`sidebar-menu-avatar`}
-      effect="solid"
-      event="click"
-      clickable
-      place={'top'}
-      offset={{ top: 0, right: 0, left: 0 }}
-      arrowColor="transparent"
-      backgroundColor="transparent"
-      renderContent={UserAvatarPopupMenu}
-    >
+    <>
       <div
-        style={{
-          display: 'flex',
-          gap: '.125rem',
-          alignItems: 'center',
-          maxWidth: '2rem',
+        className={styles.userAvatarContainer}
+        onClick={(event) => {
+          setAnchorEl(event.currentTarget);
+          setOpen((prev) => !prev);
         }}
       >
         <AvatarUser
@@ -57,28 +68,28 @@ const SidebarUserAvatar = (props: Record<string, any>) => {
         />
         <CaretSvg size="1em" direction="down" style={{ flexShrink: 0 }} />
       </div>
-    </Tooltip>
+      <Popover
+        open={open}
+        anchorEl={anchorEl}
+        popperOptions={{ placement: 'top' }}
+        placement="auto"
+      >
+        <div
+          className={clsx(RVColorProp.oxford, styles.userAvatarDropdownPanel)}
+        >
+          <Button
+            onClick={() => {
+              history.push(`/${PROFILE_USER}`);
+              setOpen((prev) => !prev);
+            }}
+          >
+            profile
+          </Button>
+          <Button onClick={handleLogout}>logout</Button>
+        </div>
+      </Popover>
+    </>
   );
 };
 
 export default SidebarUserAvatar;
-
-const UserAvatarPopupMenu = () => {
-  const history = useHistory();
-  return (
-    <div
-      style={{
-        zIndex: 1000,
-        borderRadius: '.7rem',
-        padding: '.25rem 5.rem',
-        backgroundColor: 'hsl(var(--light))',
-        display: 'flex',
-        gap: '.5rem',
-      }}
-      className={RVColorProp.distant}
-    >
-      <Button onClick={() => history.push(`/${PROFILE_USER}`)}>profile</Button>
-      <Button>logout</Button>
-    </div>
-  );
-};
