@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import usePrevious from 'hooks/usePrevious';
 import useWindow from 'hooks/useWindowContext';
 import CloseButton from 'components/Buttons/CloseButton';
+import { RVColorProp } from '@cliqmind/rv-components';
 
 const Modal = ({
   title,
@@ -84,7 +85,9 @@ const Modal = ({
                 >
                   {!stick && <EmptyTitleSide />}
                   <TitleArea
-                    className={`${titleClass ? titleClass : 'WarmColor'}`}
+                    className={`${
+                      titleClass ? titleClass : RVColorProp.distant
+                    }`}
                   >
                     {title}
                   </TitleArea>
@@ -165,7 +168,7 @@ const TitleArea = styled.div`
   font-weight: 600;
   font-size: 0.9rem;
   text-align: center;
-
+color:
   &:first-letter {
     text-transform: uppercase;
   }

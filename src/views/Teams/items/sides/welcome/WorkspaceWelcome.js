@@ -9,10 +9,10 @@ import { LINKEDIN_URL, CLIQMIND_URL } from 'constant/Url';
 import { CV_GRAY_LIGHT } from 'constant/CssVariables';
 import { getSystemName } from 'helpers/helpers';
 import DimensionHelper from 'utils/DimensionHelper/DimensionHelper';
+import { RVVariantProp } from '@cliqmind/rv-components';
 
 const DesktopWelcome = () => {
   const { RVDic } = useWindow();
-  const [buttonRef, isButtonHovered] = useHover();
 
   const isMobile = DimensionHelper().isMobile;
 
@@ -44,16 +44,7 @@ const DesktopWelcome = () => {
       <Styled.WelcomeMSGContainer>
         <Styled.WelcomeMessage>{welcomeMSG}</Styled.WelcomeMessage>
       </Styled.WelcomeMSGContainer>
-      <Button
-        onClick={openCliqmind}
-        ref={buttonRef}
-        type="primary-o"
-        style={{
-          textAlign: 'center',
-          borderColor: !isButtonHovered && '#fff',
-          backgroundColor: CV_GRAY_LIGHT,
-        }}
-      >
+      <Button onClick={openCliqmind} variant={RVVariantProp.white} style={{}}>
         {blogTitle}
       </Button>
       <Styled.SocialMediaContainer>

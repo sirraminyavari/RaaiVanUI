@@ -13,6 +13,7 @@ import WorkspaceTeamsSkeleton from '../../../others/skeletons/WorkspaceTeams';
 import { useApplicationSlice } from 'store/slice/applications';
 import API from 'apiHelper';
 import { selectApplication } from 'store/slice/applications/selectors';
+import { RVColorProp } from '@cliqmind/rv-components';
 
 const WorkspacePanel = ({ space }) => {
   const dispatch = useDispatch();
@@ -48,7 +49,7 @@ const WorkspacePanel = ({ space }) => {
       <SpaceHeader space={space} />
       <DndProvider backend={HTML5Backend}>
         <Flipper flipKey={space.WorkspaceID} spring="stiff">
-          <Styled.TeamListContainer>
+          <Styled.TeamListContainer className={RVColorProp.cgBlue}>
             {isFetching ? (
               <WorkspaceTeamsSkeleton />
             ) : (

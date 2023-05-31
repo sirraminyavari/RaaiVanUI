@@ -17,6 +17,7 @@ import { CV_WHITE } from 'constant/CssVariables';
 import { avatarIconURL } from 'helpers/helpers';
 import consoleLogger from 'utils/console/consoleLogger';
 import 'scss/global.scss';
+import ThemeProvider from 'components/ThemeProvider/ThemeProvider';
 
 const { RV_RTL, GlobalUtilities } = window;
 
@@ -44,24 +45,26 @@ const App = () => {
         bodyClassName="rv-font-default"
       />
       <StoreProvider>
-        <Suspense fallback={<LogoLoader />}>
-          <Router>
-            <ScrollToTop />
-            <Switch>
-              <Route
-                path={AUTH_PATH}
-                render={(props) => (
-                  <CheckRoute
-                    props={props}
-                    name={LOGIN_NAME}
-                    component={AuthView}
-                  />
-                )}
-              />
-              <PrivateRoute path={ROOT_PATH} component={MainLayout} />
-            </Switch>
-          </Router>
-        </Suspense>
+        <ThemeProvider>
+          <Suspense fallback={<LogoLoader />}>
+            <Router>
+              <ScrollToTop />
+              <Switch>
+                <Route
+                  path={AUTH_PATH}
+                  render={(props) => (
+                    <CheckRoute
+                      props={props}
+                      name={LOGIN_NAME}
+                      component={AuthView}
+                    />
+                  )}
+                />
+                <PrivateRoute path={ROOT_PATH} component={MainLayout} />
+              </Switch>
+            </Router>
+          </Suspense>
+        </ThemeProvider>
       </StoreProvider>
     </ErrorBoundry>
   );

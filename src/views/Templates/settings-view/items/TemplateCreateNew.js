@@ -33,6 +33,7 @@ const TemplateCreateNew = ({ parent, isSaaS = false, onSubmit, title }) => {
     <>
       {!parent && !isSaaS && (
         <RootAddButton
+          className="color-cgBlue"
           onClick={(e) => setModalInfo({ ...modalInfo, show: true })}
         >
           <AddIcon size={20} />

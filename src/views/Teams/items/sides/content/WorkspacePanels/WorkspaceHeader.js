@@ -16,6 +16,8 @@ import {
   WORKSPACE_REMOVE_PATH,
 } from '../../../others/constants';
 import Tooltip from 'components/Tooltip/react-tooltip/Tooltip';
+import { TCV_DEFAULT } from 'constant/CssVariables';
+import { RVColorProp } from '@cliqmind/rv-components';
 
 /**
  *
@@ -100,11 +102,10 @@ const WorkspaceHeader = ({ space }) => {
         messageQuestion={RVDicDeleteConfirmQuestion}
         messageWarning={RVDicDeleteConfirmWarning}
       />
-      <Styled.SpaceHeaderTitle>
+      <Styled.SpaceHeaderTitle className={RVColorProp.cgBlue}>
         <SpaceIcon
-          className={TC_DEFAULT}
           size={'1.4rem'}
-          style={{ marginInlineEnd: '0.6rem' }}
+          style={{ marginInlineEnd: '0.6rem', color: TCV_DEFAULT }}
         />
         {space.Editable ? (
           <Tooltip

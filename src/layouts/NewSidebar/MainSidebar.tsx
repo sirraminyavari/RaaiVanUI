@@ -16,6 +16,7 @@ import {
   TEAM_SETTINGS_PATH,
 } from 'constant/constants';
 import { selectSidebar } from 'store/slice/sidebar/selectors';
+import useWindowContext from 'hooks/useWindowContext';
 
 const PrimarySidebar = () => {
   const history = useHistory();
@@ -36,10 +37,9 @@ const PrimarySidebar = () => {
     classesTree: tree,
   });
   const workspaceApplication = useSelector(selectApplication);
+  const { RVGlobal, RV_RTL } = useWindowContext();
 
   useEffect(() => {
-    console.log(CLASSES_PATH, history.location.pathname);
-
     switch (true) {
       case history.location.pathname.startsWith(CLASSES_PATH):
       case history.location.pathname.startsWith(
@@ -61,8 +61,12 @@ const PrimarySidebar = () => {
 
     return () => {};
   }, [history.location, setIsSubMenuToggled]);
+
+  useEffect(() => {
+    console.log(RVGlobal?.CurrentUser?.Settings?.SidebarWindow);
+  });
   return (
-    <div style={{ display: 'flex' }}>
+    <div style={{ display: 'flex' }} className={RV_RTL ? 'direction-rtl' : ''}>
       <SidebarMain
         currentPath={history.location.pathname}
         primaryLinks={mainSidebarPrimaryLinks || []}
@@ -72,7 +76,11 @@ const PrimarySidebar = () => {
         menuSubTitle={decodeBase64(workspaceApplication.currentApp?.Title)}
         menuTitle={decodeBase64(workspaceApplication.currentApp?.Website)}
         open={isSubMenuToggled}
-        // CloseTrigger={setIsSubMenuToggled}
+        CloseTrigger={
+          RVGlobal?.CurrentUser?.Settings?.SidebarWindow
+            ? setIsSubMenuToggled
+            : undefined
+        }
         links={subSidebarLinks || []}
         activeLink={`${history.location.pathname}${history.location.search}`}
         className={styles.sidebarSubMenu}

@@ -176,9 +176,7 @@ const SidebarContentProfile: SidebarContentFunction<{}> = ({
       {
         title: 'Profile',
         Icon: (props) => <PersonCircleSvg {...props} outline={false} />,
-        onClick: () => {
-          history.push(`/${PROFILE_USER}`);
-        },
+        onClick: () => {},
         id: `/${PROFILE_USER}`,
         path: `/${PROFILE_USER}`,
       },

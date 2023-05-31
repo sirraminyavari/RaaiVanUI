@@ -18,7 +18,7 @@ const SaaSTemplateCard = ({ TypeName, IconURL, NodeTypeID }) => {
   };
 
   return (
-    <CardContainer onClick={handleCardClick}>
+    <CardContainer onClick={handleCardClick} className="color-cgBlue">
       <Image src={IconURL} alt={TypeName} />
       <Title>{TypeName}</Title>
       <Subtitle>
