@@ -42,15 +42,10 @@ const ProfileCustomization = ({ route }) => {
   } = useSelector(selectTheme);
 
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(
-    !!currentUser?.Settings?.[SIDEBAR_WINDOW]
+    currentUser?.Settings?.[SIDEBAR_WINDOW]
   );
 
   const PAGE_TITLE = RVDic.Personalization;
-
-  const breadcrumbItems = [
-    { id: 1, title: RVDic.Profile, linkTo: USER_PATH },
-    { id: 2, title: PAGE_TITLE, linkTo: USER_CUSTOMIZATION_PATH },
-  ];
 
   /**
    * @description Provides an appropriate message according to RVDics.
@@ -75,14 +70,16 @@ const ProfileCustomization = ({ route }) => {
   };
 
   const handleMenuCollapse = (event) => {
-    const isToggled = event.currentTarget.value === 'on';
-    setIsSidebarCollapsed(isToggled);
+    alert(event.currentTarget.checked);
+    const isToggled = event.currentTarget.checked;
+    setIsSidebarCollapsed(!isToggled);
 
-    saveUserSettings(SIDEBAR_WINDOW, isToggled)
+    saveUserSettings(SIDEBAR_WINDOW, isToggled ? 'True' : 'False')
       .then((response) => {
         // console.log(response);
         if (response?.ErrorText) {
-          setIsSidebarCollapsed(!!currentUser?.Settings?.[SIDEBAR_WINDOW]);
+          setIsSidebarCollapsed(!currentUser?.Settings?.[SIDEBAR_WINDOW]);
+
           renderToast('error', response?.ErrorText);
         }
         if (response.Succeed) {
@@ -134,7 +131,7 @@ const ProfileCustomization = ({ route }) => {
               <ThemeToggle
                 // disable={isSavingMenuSetting}
                 onChange={handleMenuCollapse}
-                value={isSidebarCollapsed}
+                defaultValue={isSidebarCollapsed}
                 title="Action menu should be open by default"
                 titleClass={`${C_GRAY_DARK} profile-theme-toggle`}
               />

@@ -27,7 +27,7 @@ export interface IThemeState {
   currentTheme?: any;
   isDarkMode: boolean;
   hasSidebarPattern: boolean;
-  hasSidebar: boolean;
+  isSidebarToggleable: boolean;
   //! hide sidebar view completely
   hideSidebar: boolean;
 }
@@ -49,6 +49,6 @@ export const EmptyThemeState: IThemeState = {
   currentTheme: null,
   isDarkMode: false,
   hasSidebarPattern: true,
-  hasSidebar: false,
+  isSidebarToggleable: true,
   hideSidebar: false,
 };

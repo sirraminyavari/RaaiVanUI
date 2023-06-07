@@ -241,7 +241,7 @@ const CheckRoute = ({ component: Component, name, props, hasNavSide }) => {
         }}
       />
     );
-  } else if (route?.RedirectToProfile && !isUserView) {
+  } else if (route?.RedirectToProfile) {
     //! If check route api is resolved and user is authenticated, then redirect to profile page.
     const path = route.RedirectToProfile;
     const isString = typeof path === 'string';
