@@ -10,7 +10,6 @@ import Button from 'components/Buttons/Button';
 import { PROFILE_USER } from 'constant/constants';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectAuth } from 'store/slice/auth/selectors';
-import { useHistory } from 'react-router-dom';
 import { useAuthSlice } from 'store/slice/auth';
 import Popover from '@mui/base/PopperUnstyled';
 import { useState } from 'react';
@@ -22,9 +21,8 @@ const AvatarUser = WithAvatar({
   componentURLProp: 'src',
 });
 
-const SidebarUserAvatar = (props: Record<string, any>) => {
+const SidebarUserAvatar = ({ history, ...props }: Record<string, any>) => {
   const { authUser } = useSelector(selectAuth);
-  const history = useHistory();
   const dispatch = useDispatch();
   const [open, setOpen] = useState<boolean>(false);
   const [anchorEl, setAnchorEl] = useState<HTMLDivElement>();
@@ -75,17 +73,20 @@ const SidebarUserAvatar = (props: Record<string, any>) => {
         placement="auto"
       >
         <div
-          className={clsx(RVColorProp.oxford, styles.userAvatarDropdownPanel)}
+          className={clsx(RVColorProp.platinum, styles.userAvatarDropdownPanel)}
         >
           <Button
             onClick={() => {
               history.push(`/${PROFILE_USER}`);
               setOpen((prev) => !prev);
             }}
+            color={RVColorProp.platinum}
           >
-            profile
+            Profile
           </Button>
-          <Button onClick={handleLogout}>logout</Button>
+          <Button color={RVColorProp.platinum} onClick={handleLogout}>
+            Logout
+          </Button>
         </div>
       </Popover>
     </>

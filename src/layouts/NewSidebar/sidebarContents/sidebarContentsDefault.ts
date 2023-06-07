@@ -30,10 +30,9 @@ const SidebarContentDefault: SidebarContentFunction = ({
         path: `${TEAMS_PATH}`,
       },
       {
-        Icon: SidebarUserAvatar,
+        Icon: () => SidebarUserAvatar({ history }),
         noIndicator: false,
         onClick: () => {
-          history.push(`/${PROFILE_USER}`);
           setIsSubMenuToggled(false);
         },
         path: `/${PROFILE_USER}`,

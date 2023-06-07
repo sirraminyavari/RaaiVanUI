@@ -1,8 +1,9 @@
 @import '@cliqmind/rv-components/scss/modules/default.scss';
-// @import '@cliqmind/rv-components/scss/modules/normalize';
+@import '@cliqmind/rv-components/scss/modules/normalize';
 @import '@cliqmind/rv-components/scss/GlobalStyles.scss';
 @import '@cliqmind/rv-components/scss/modules/font-IRANSans';
 @import '@cliqmind/rv-components/scss/modules/font-Roboto';
+@import './common';
 
 html,
 body {

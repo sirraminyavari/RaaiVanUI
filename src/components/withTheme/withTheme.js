@@ -8,5 +8,5 @@ const withTheme = (Component) => (props) => {
 
   return <Component theme={{ states, actions }} {...props} />;
 };
-
+withTheme.displayName = 'withTheme';
 export default withTheme;
