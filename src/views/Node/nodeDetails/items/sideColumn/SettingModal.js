@@ -3,7 +3,7 @@
  */
 import { useState, useContext } from 'react';
 import * as Styled from 'views/Node/nodeDetails/NodeDetails.style';
-import Toggle from 'components/Toggle/Toggle';
+import Toggle from 'components/Buttons/Toggle/Toggle';
 import { C_GRAY_DARK } from 'constant/Colors';
 import { SideContext } from './SideColumn';
 import { setNodeSearchability } from 'apiHelper/apiFunctions';

@@ -27,6 +27,7 @@ import {
   REPORTS_PATH,
   TEAM_SETTINGS_PATH,
   TEMPLATES_SETTING_PATH,
+  USER_SECURITY_PATH,
 } from 'constant/constants';
 import { SidebarContentFunction } from './useSidebarContent';
 import SidebarContentDefault from './sidebarContentsDefault';
@@ -39,6 +40,7 @@ const SidebarContentProfile: SidebarContentFunction<{}> = ({
   history,
   urlParams,
   selectedApplication,
+  classesTree,
 }) => {
   const { RVGlobal } = useWindowContext();
   const defaults = SidebarContentDefault({
@@ -47,6 +49,7 @@ const SidebarContentProfile: SidebarContentFunction<{}> = ({
     setIsSubMenuToggled,
     urlParams,
     selectedApplication,
+    classesTree,
   });
 
   return {
@@ -173,39 +176,37 @@ const SidebarContentProfile: SidebarContentFunction<{}> = ({
       {
         title: 'Profile',
         Icon: (props) => <PersonCircleSvg {...props} outline={false} />,
-        onClick: () => {
-          history.push(`/${PROFILE_USER}`);
-        },
-        id: `/${PROFILE_USER}Profile`,
+        onClick: () => {},
+        id: `/${PROFILE_USER}`,
         path: `/${PROFILE_USER}`,
       },
       {
         title: 'Security & Authentication',
         Icon: (props) => <ShieldSvg {...props} outline />,
         onClick: () => {
-          history.push(`/${PROFILE_USER}Security`);
+          history.push(`${USER_SECURITY_PATH}`);
         },
-        id: `/${PROFILE_USER}`,
-        path: `/${PROFILE_USER}`,
+        id: `${USER_SECURITY_PATH}`,
+        path: `${USER_SECURITY_PATH}`,
       },
       {
         title: 'Personalization',
         Icon: (props) => <ShirtSvg {...props} outline />,
         onClick: () => {
-          history.push(`/${PROFILE_USER}`);
+          history.push(`/${PROFILE_USER}/customization`);
         },
-        id: `/${PROFILE_USER}Personalization`,
-        path: `/${PROFILE_USER}`,
+        id: `/${PROFILE_USER}/customization`,
+        path: `/${PROFILE_USER}/customization`,
       },
-      {
-        title: 'Missions',
-        Icon: (props) => <RocketSvg {...props} outline />,
-        onClick: () => {
-          history.push(`/${PROFILE_USER}`);
-        },
-        id: `/${PROFILE_USER}Missions`,
-        path: `/${PROFILE_USER}`,
-      },
+      // {
+      //   title: 'Missions',
+      //   Icon: (props) => <RocketSvg {...props} outline />,
+      //   onClick: () => {
+      //     history.push(`/${PROFILE_USER}`);
+      //   },
+      //   id: `/${PROFILE_USER}Missions`,
+      //   path: `/${PROFILE_USER}`,
+      // },
     ],
   };
 };

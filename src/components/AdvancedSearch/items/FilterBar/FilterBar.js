@@ -533,7 +533,11 @@ const FilterBar = ({
               )}
             >
               <ShadowButton
-                onClick={() => push(`?bookmarked=${isBookMarked ? 0 : 1}`)}
+                onClick={() =>
+                  push(
+                    `${location.pathname}${isBookMarked ? '' : '?bookmarked=1'}`
+                  )
+                }
                 active={isBookMarked}
                 size={RVSizeProp.medium}
                 rounded="half"

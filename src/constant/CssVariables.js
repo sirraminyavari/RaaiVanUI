@@ -8,13 +8,13 @@
  * @mode Theme
  * @color (#2b7be4)
  */
-export const TCV_DEFAULT = 'var(--rv-color)';
+export const TCV_DEFAULT = 'hsl(var(--base))';
 /**
  * @description Css variable
  * @mode Theme
  * @color (#2b7be433)
  */
-export const TCV_VERY_TRANSPARENT = 'var(--rv-color-verytransparent)';
+export const TCV_VERY_TRANSPARENT = 'var(--light)';
 
 /**
  * @description Css variable

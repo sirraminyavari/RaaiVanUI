@@ -34,6 +34,7 @@ const SidebarContentTeamSettings: SidebarContentFunction<{}> = ({
   history,
   urlParams,
   selectedApplication,
+  classesTree,
 }) => {
   const { RVGlobal } = useWindowContext();
   const defaults = SidebarContentDefault({
@@ -42,6 +43,7 @@ const SidebarContentTeamSettings: SidebarContentFunction<{}> = ({
     setIsSubMenuToggled,
     urlParams,
     selectedApplication,
+    classesTree,
   });
 
   return {

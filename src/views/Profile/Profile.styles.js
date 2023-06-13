@@ -46,14 +46,16 @@ import Heading from 'components/Heading/Heading';
 const { RV_Float, RV_RevFloat, RV_RTL, GlobalUtilities } = window;
 
 export const ProfileViewContainer = styled.div.attrs({
-  className: `${BG_GRAY_LIGHT} ${BO_RADIUS_HALF}`,
+  className: `${BO_RADIUS_HALF}`,
 })`
+  background-color: hsl(var(--white));
   min-height: calc(100vh - 5.5rem);
   // box-shadow: 1px 5px 15px #0000001f;
   margin: 1.5rem;
   padding: 1.5rem;
   position: relative;
   user-select: none;
+  flex-shrink: 0;
 
   .profile-image-crop-modal {
     color: ${TCV_DEFAULT};
@@ -154,23 +156,12 @@ export const CustomizationView = styled.div`
   .profile-theme-toggle {
     margin: 0.5rem 0;
   }
-
-  .profile-theme-setting {
-    min-width: 18rem;
-    min-height: 10rem;
-    margin: 0;
-    ${({ dir }) => `margin-${dir}:1rem;`}
-    padding: 1rem;
-    text-align: center;
-    position: fixed;
-    ${RV_RevFloat}: 1rem;
-  }
 `;
 
 export const ThemeSettingTitle = styled.span.attrs({
   className: TC_DEFAULT,
 })`
-  display: inline-block;
+  display: block;
   font-size: 1rem;
   margin-bottom: 2rem;
 `;
@@ -181,9 +172,7 @@ const activePreviewCss = css`
 `;
 
 export const ThemePreviewContainer = styled.div.attrs((props) => ({
-  className: `${BO_RADIUS_HALF} ${
-    props.isDark ? BG_GRAY_DARK : BG_FREEZED
-  } ${BO_DISTANT}`,
+  className: `${BO_RADIUS_HALF}`,
 }))`
   width: 100%;
   height: 10rem;
@@ -191,6 +180,7 @@ export const ThemePreviewContainer = styled.div.attrs((props) => ({
   overflow: hidden;
   cursor: pointer;
   box-sizing: content-box;
+  background-color: hsl(var(--white));
   ${({ isActive }) => isActive && activePreviewCss};
 `;
 
@@ -200,7 +190,7 @@ export const NavbarPreview = styled.div.attrs({
   width: 100%;
   height: 2rem;
   position: absolute;
-  background-color: ${({ previewColor }) => previewColor};
+  background-color: transparent;
   top: 0;
 `;
 
@@ -211,7 +201,7 @@ export const SidebarPreview = styled.div.attrs({
 })`
   width: ${({ isClose }) => (isClose ? '10%' : '30%')};
   height: 100%;
-  background-color: ${({ previewColor }) => previewColor};
+  background-color: hsl(var(--base));
   ${({ hasPattern }) =>
     hasPattern && `background-image: url(${sidebarPattern});`}
   position: absolute;
@@ -219,9 +209,7 @@ export const SidebarPreview = styled.div.attrs({
   transition: all 0.7s ease;
 `;
 
-export const PreviewSelectionWrapper = styled.div.attrs({
-  className: `${TC_DEFAULT}`,
-})`
+export const PreviewSelectionWrapper = styled.div.attrs({})`
   position: absolute;
   top: 2rem;
   ${RV_RevFloat}: 0;
@@ -230,6 +218,7 @@ export const PreviewSelectionWrapper = styled.div.attrs({
   ${FLEX_CCC}
   font-size: 1rem;
   transition: all 0.7s ease;
+  color: hsl(var(--black));
 `;
 
 const defaultCover = GlobalUtilities.icon('DefaultCoverPhoto.jpg');

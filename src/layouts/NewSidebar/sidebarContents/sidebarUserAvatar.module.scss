@@ -1,0 +1,18 @@
+.userAvatarContainer {
+  display: flex;
+  gap: 0.125rem;
+  align-items: center;
+  max-width: 2rem;
+}
+
+.userAvatarDropdownPanel {
+  z-index: 1000;
+  border-radius: 0.7rem;
+  padding: 0.5rem 0.5rem;
+  background-color: hsl(var(--base));
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: center;
+  align-items: center;
+}

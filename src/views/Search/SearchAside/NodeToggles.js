@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { searchContext } from 'views/Search/SearchView';
 import * as Styled from 'views/Search/SearchView.styles';
-import Toggle from 'components/Toggle/Toggle';
+import Toggle from 'components/Buttons/Toggle/Toggle';
 import useWindow from 'hooks/useWindowContext';
 
 const NodeToggles = () => {

@@ -172,7 +172,9 @@ export const AddUserWrapper = styled.div.attrs({
   width: 2.5rem;
   height: 2.5rem;
   background-color: ${CV_FREEZED};
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   line-height: 3.5rem;
   ${({ rtl }) => rtl && 'transform: scaleX(-1);'}
   position: relative;
